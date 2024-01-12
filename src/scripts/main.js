@@ -1,9 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('[data-tab-button]');
     const questions = document.querySelectorAll('[data-faq-question]')
 
+    const alturaDoHero = document.querySelector('.hero').clientHeight;
+
+    window.addEventListener('scroll', (janela) => {
+        const posicaoAtual = janela.scrollY;
+
+        if(posicaoAtual < alturaDoHero) {
+            ocultarElementosHeader()
+        } else {
+            exibeElementosHeader()
+        }
+    })
+
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', function(botao) {
+        buttons[i].addEventListener('click', (botao) => {
             const abaAlvo = botao.target.dataset.tabButton;
             const aba = document.querySelector(`[data-tab-id=${abaAlvo}]`)
             escondeTodasAsAbas();
@@ -14,9 +26,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     for (let i = 0; i < questions.length; i++) {
-        questions[i].addEventListener('click', abreOuFechaResposta)
+        questions[i].addEventListener('click', abreOuFechaResposta())
     }
 })
+
+function ocultarElementosHeader() {
+    const header = document.querySelector('.header');
+    header.classList.add('header--is-hidden')
+}
+
+function exibeElementosHeader() {
+    const header = document.querySelector('.header');
+    header.classList.remove('header--is-hidden')
+}
 
 function abreOuFechaResposta(elemento) {
     const elementoPai = elemento.target.parentNode
